@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.cybc" name="CyBC - PIK" version="0.0.6" provider-name="Doros">
+  <requires>
+    <import addon="xbmc.python" version="2.0"/>
+ </requires>
+  <extension point="xbmc.python.pluginsource" library="addon.py">
+        <provides>video audio</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <language>en</language>
+    <platform>all</platform>
+    <summary lang="en">Stream CyBC content</summary>
+    <description lang="en">This plugin allows the streaming of video-on-demand and audio-on-demand content from www.cybc.com.cy otherwise known as PIK (or RIK)</description>
+  </extension>
+</addon>
