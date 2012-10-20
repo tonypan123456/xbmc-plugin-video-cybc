@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.cybc" name="CyBC - PIK" version="0.0.7" provider-name="Doros">
+<addon id="plugin.video.cybc" name="CyBC - PIK" version="0.0.8" provider-name="Doros">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
  </requires>

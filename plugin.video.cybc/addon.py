@@ -7,9 +7,11 @@ _pluginName = (sys.argv[0])
 _thisPlugin = int(sys.argv[1])
 _connectionTimeout = 20
 _header = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3'
-_videoCategoriesUrl = "http://www.cybc.com.cy/video-on-demand/index.php?option=com_videoflow&task=categories"
+#_videoCategoriesUrl = "http://www.cybc.com.cy/video-on-demand/index.php?option=com_videoflow&task=categories"
+_videoCategoriesUrl = "http://www.cybc-media.com/video/index.php/video-on-demand?task=categories&layout=list"
 _audioCategoriesUrl = "http://www.cybc.com.cy/audio-on-demand/index.php?option=com_videoflow&task=categories"
-_cybcMediaContentServer = 'http://www.cybc.com.cy'
+_cybcAudioContentServer = 'http://www.cybc.com.cy'
+_cybcVideoContentServer = 'http://www.cybc-media.com'
 
 def listMainCategories():
     
@@ -25,11 +27,11 @@ def listVideoCategories(url):
         response = urllib2.urlopen(req, timeout = _connectionTimeout)
         link=response.read()
         response.close()
-#        match = re.compile('<a href="(/video/index.php/video-on-demand\?task=cats&amp;cat=(.*)&amp;sl=categories&amp;layout=list)" >(.+?)</a>').findall(link)
-        match = re.compile('<a href="(/video-on-demand/index.php\?option=com_videoflow&amp;task=cats&amp;cat=(.*)&amp;layout=grid&amp;sl=categories)">(.+?)</a>').findall(link)
+        match = re.compile('<a href="(/video/index.php/video-on-demand\?task=cats&amp;cat=(.*)&amp;sl=categories&amp;layout=list)" >(.+?)</a>').findall(link)
+#        match = re.compile('<a href="(/video-on-demand/index.php\?option=com_videoflow&amp;task=cats&amp;cat=(.*)&amp;layout=grid&amp;sl=categories)">(.+?)</a>').findall(link)
         
         for i in range(len(match)):
-            videoCategoryUrl = _cybcMediaContentServer + match[i][0]    #?mode=videoCategoryContent&url=videoCategoryContent&categoryId=' + match[i][1]
+            videoCategoryUrl = _cybcVideoContentServer + match[i][0]    #?mode=videoCategoryContent&url=videoCategoryContent&categoryId=' + match[i][1]
             match[i] = (videoCategoryUrl, match[i][1], unicode(match[i][2], 'utf-8'))
         
         for url, catId, name in match:
@@ -45,11 +47,11 @@ def listVideosInCategory(url):
         response = urllib2.urlopen(req, timeout = _connectionTimeout)
         link=response.read()
         response.close()
-    #    match = re.compile('<a href="(/video/index.php/video-on-demand\?task=play&amp;id=(.*)&amp;sl=cats&amp;layout=listview)">(.+?)</a>').findall(link)
-        match = re.compile('<a href="(/video-on-demand/index.php\?option=com_videoflow&amp;task=play&amp;id=(.*)&amp;sl=cats")>(.+?)</a>').findall(link)
+        match = re.compile('<a href="(/video/index.php/video-on-demand\?task=play&amp;id=(.*)&amp;sl=cats)">(.+?)</a>').findall(link)
+#        match = re.compile('<a href="(/video-on-demand/index.php\?option=com_videoflow&amp;task=play&amp;id=(.*)&amp;sl=cats")>(.+?)</a>').findall(link)
         
         for i in range(len(match)):
-            playVideoUrl = _cybcMediaContentServer + match[i][0]
+            playVideoUrl = _cybcVideoContentServer + match[i][0]
             match[i] = (playVideoUrl, match[i][1], unicode(match[i][2], 'utf-8'))
     
         for url, videoId, name in match:
@@ -65,8 +67,8 @@ def resolveAndPlayVideo(url):
         link=response.read()
         response.close()
     
-    #    match = re.compile("'file':.*'(http://www.cybc-media.com/video/videoflow/videos/.*)',").findall(link)
-        match = re.compile("'file':.*'(http://www.cybc.com.cy/video-on-demand/../videoflow/videos/.*)',").findall(link)
+        match = re.compile("'file':.*'(http://www.cybc-media.com/video/videoflow/videos/.*)',").findall(link)
+#        match = re.compile("'file':.*'(http://www.cybc.com.cy/video-on-demand/../videoflow/videos/.*)',").findall(link)
         
         listItem = xbmcgui.ListItem(path=str(match[0]))
         listItem.setProperty('IsPlayable', 'true')
@@ -86,7 +88,7 @@ def listAudioCategories(url):
         match = re.compile('<a href="(/audio-on-demand/index.php\?option=com_videoflow&amp;task=cats&amp;cat=(.*)&amp;layout=grid&amp;sl=categories)">(.+?)</a>').findall(link)
         
         for i in range(len(match)):
-            audioCategoryUrl = _cybcMediaContentServer + match[i][0]
+            audioCategoryUrl = _cybcAudioContentServer + match[i][0]
             match[i] = (audioCategoryUrl, match[i][1], unicode(match[i][2], 'utf-8'))
         
         for url, catId, name in match:
@@ -104,7 +106,7 @@ def listAudioInCategory(url):
         match = re.compile('<a href="(/audio-on-demand/index.php\?option=com_videoflow&amp;task=play&amp;id=(.*)&amp;sl=cats")>(.+?)</a>').findall(link)
         
         for i in range(len(match)):
-            playAudioUrl = _cybcMediaContentServer + match[i][0]
+            playAudioUrl = _cybcAudioContentServer + match[i][0]
             match[i] = (playAudioUrl, match[i][1], unicode(match[i][2], 'utf-8'))
     
         for url, videoId, name in match:
